@@ -192,7 +192,11 @@ void processCommand(Receipt& receipt) {
         if (cmd == "/set") {
             iss >> arg1;
             std::getline(iss, arg2); // Read the rest of the line after the first argument
-            arg2 = arg2.substr(1);   // Remove the leading space
+
+            if (!arg2.empty()) {
+                arg2 = arg2.substr(1);   // Remove the leading space
+            }
+
 
             if (arg1 == "title") {
                 receipt.setTitle(arg2);
@@ -207,12 +211,25 @@ void processCommand(Receipt& receipt) {
                 receipt.setCity(arg2);
             }
             else if (arg1 == "member") {
-                receipt.setMember(std::stoi(arg2));
+                try {
+                    receipt.setMember(std::stoi(arg2));
+                }
+                catch (const std::invalid_argument& e) {
+                    std::cerr << "Invalid member number provided." << std::endl;
+                }
+            }
+            else {
+                std::cout << "Invalid argument for /set command." << std::endl;
             }
         }
         else if (cmd == "/additem") {
             iss >> arg1 >> arg2 >> arg3;
-            receipt.addItem(arg1, arg2, arg3);
+            if (!arg1.empty() && !arg2.empty() && !arg3.empty()) {
+                receipt.addItem(arg1, arg2, arg3);
+            }
+            else {
+                std::cout << "Invalid arguments for /additem command." << std::endl;
+            }
         }
         else if (cmd == "/print") {
             receipt.printReceipt();
@@ -233,5 +250,6 @@ void processCommand(Receipt& receipt) {
         }
     }
 }
+
 
 #endif // STORE_H
