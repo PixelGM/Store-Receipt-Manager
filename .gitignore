@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+.vs/
 .vs/ConsoleApplication1/FileContentIndex/10114eec-842c-4a1c-97b3-57f70ff6ff1e.vsidx
 .vs/ConsoleApplication1/FileContentIndex/43fdcf60-e491-4cf0-a15d-e734f28709c8.vsidx
 .vs/ConsoleApplication1/FileContentIndex/666de3a7-fad7-445c-830d-d275e725699f.vsidx
