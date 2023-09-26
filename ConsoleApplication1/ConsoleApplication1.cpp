@@ -42,9 +42,9 @@ public:
     }
 
     // Getters and Setters Receipt
-    void setTitle(const std::string& title) { title = title; }
+    void setTitle(const std::string& title) { this->title = title; }
     void setBranch(const std::string& branchName) { branch = branchName; }
-    void setStreet(const std::string& street) { street = street; }
+    void setStreet(const std::string& street) { this->street = street; }
     void setCity(const std::string& details) { city = details; }
     void setMember(int number) { member = number; }
     void setItems(const std::vector<Item>& newItems) { items = newItems; }
