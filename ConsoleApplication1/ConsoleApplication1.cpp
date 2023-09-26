@@ -2,6 +2,8 @@
 #include <vector>
 #include <iomanip>
 #include <sstream>
+#include "../nlohmann/json.hpp"
+#include <fstream>
 
 class Item {
 private:
@@ -39,11 +41,20 @@ public:
         items.push_back(Item(55506, "Chicken", 34.21));
     }
 
+    // Getters and Setters Receipt
     void setStoreTitle(const std::string& title) { storeTitle = title; }
     void setBranch(const std::string& branchName) { branch = branchName; }
     void setStreetName(const std::string& street) { streetName = street; }
     void setCityDetails(const std::string& details) { cityDetails = details; }
     void setMemberNumber(int number) { memberNumber = number; }
+    void setItems(const std::vector<Item>& newItems) { items = newItems; }
+
+    std::string getStoreTitle() const { return storeTitle; }
+    std::string getBranch() const { return branch; }
+    std::string getStreetName() const { return streetName; }
+    std::string getCityDetails() const { return cityDetails; }
+    int getMemberNumber() const { return memberNumber; }
+    const std::vector<Item>& getItems() const { return items; }
 
     void addItem(const std::string& idStr, const std::string& name, const std::string& priceStr) {
         // Convert id string to int
@@ -80,6 +91,77 @@ public:
         std::cout << "TOTAL (" << total << ")" << std::endl;
     }
 };
+
+nlohmann::json to_json(const Item& item) {
+    nlohmann::json j;
+    j["id"] = item.getId();
+    j["name"] = item.getName();
+    j["price"] = item.getPrice();
+    return j;
+}
+
+nlohmann::json to_json(const Receipt& receipt) {
+    nlohmann::json j;
+    j["storeTitle"] = receipt.getStoreTitle(); // You'll need to add a getter for this
+    j["branch"] = receipt.getBranch();         // Add a getter for this too
+    // ... do this for all members
+
+    // For the items vector:
+    for (const auto& item : receipt.getItems()) { // Add a getter for items
+        j["items"].push_back(to_json(item));
+    }
+    return j;
+}
+
+// Save the Receipt object to a JSON file
+void save_to_file(const Receipt& receipt, const std::string& filename) {
+    nlohmann::json j = to_json(receipt);
+
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file for writing." << std::endl;
+        return;
+    }
+
+    file << j.dump(4); // 4 spaces for indentation
+}
+
+// Load the Receipt object from a JSON file
+void load_from_file(Receipt& receipt, const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file." << std::endl;
+        return;
+    }
+
+    nlohmann::json j;
+    file >> j;
+
+    // Check for the existence of keys and handle potential null values
+    std::string storeTitle = j.contains("storeTitle") && !j["storeTitle"].is_null() ? j["storeTitle"].get<std::string>() : "Default Store Title";
+    std::string branch = j.contains("branch") && !j["branch"].is_null() ? j["branch"].get<std::string>() : "Default Branch";
+    std::string streetName = j.contains("streetName") && !j["streetName"].is_null() ? j["streetName"].get<std::string>() : "Default Street Name";
+    std::string cityDetails = j.contains("cityDetails") && !j["cityDetails"].is_null() ? j["cityDetails"].get<std::string>() : "Default City Details";
+    int memberNumber = j.contains("memberNumber") && !j["memberNumber"].is_null() ? j["memberNumber"].get<int>() : 0; // Default member number as 0
+
+    std::vector<Item> items;
+    if (j.contains("items") && j["items"].is_array()) {
+        for (const auto& item_json : j["items"]) {
+            int id = item_json.contains("id") && !item_json["id"].is_null() ? item_json["id"].get<int>() : 0;
+            std::string name = item_json.contains("name") && !item_json["name"].is_null() ? item_json["name"].get<std::string>() : "Default Item Name";
+            double price = item_json.contains("price") && !item_json["price"].is_null() ? item_json["price"].get<double>() : 0.0;
+            items.push_back(Item(id, name, price));
+        }
+    }
+
+    // Set the values to the receipt object
+    receipt.setStoreTitle(storeTitle);
+    receipt.setBranch(branch);
+    receipt.setStreetName(streetName);
+    receipt.setCityDetails(cityDetails);
+    receipt.setMemberNumber(memberNumber);
+    receipt.setItems(items);
+}
 
 int main() {
     Receipt receipt;
@@ -122,6 +204,17 @@ int main() {
         }
         else if (cmd == "/print") {
             receipt.printReceipt();
+        }
+        else if (cmd == "/save") {
+            save_to_file(receipt, "receipt.json");
+        }
+        else if (cmd == "/load") {
+            try {
+                load_from_file(receipt, "receipt.json");
+            }
+            catch (const nlohmann::json::exception& e) {
+                std::cerr << "JSON error: " << e.what() << std::endl;
+            }
         }
         else {
             std::cout << "Invalid command. Please try again." << std::endl;

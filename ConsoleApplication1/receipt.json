@@ -1,0 +1,16 @@
+{
+    "branch": "Willingdon #548",
+    "items": [
+        {
+            "id": 30669,
+            "name": "Bananas",
+            "price": 1.99
+        },
+        {
+            "id": 55506,
+            "name": "Chicken",
+            "price": 34.21
+        }
+    ],
+    "storeTitle": "Costco"
+}
