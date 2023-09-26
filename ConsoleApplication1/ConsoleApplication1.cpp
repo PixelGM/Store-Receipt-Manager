@@ -45,7 +45,13 @@ public:
     void setCityDetails(const std::string& details) { cityDetails = details; }
     void setMemberNumber(int number) { memberNumber = number; }
 
-    void addItem(const int& id, const std::string& name,  const double& price) {
+    void addItem(const std::string& idStr, const std::string& name, const std::string& priceStr) {
+        // Convert id string to int
+        int id = std::stoi(idStr);
+
+        // Convert price string to double
+        double price = std::stod(priceStr);
+
         Item item(id, name, price);
         items.push_back(item);
     }
@@ -88,13 +94,28 @@ int main() {
         }
 
         std::istringstream iss(command);
-        std::string cmd, arg1, arg2;
+        std::string cmd, arg1, arg2, arg3, arg4;
 
         iss >> cmd >> arg1;
-        std::getline(iss, arg2);
+
+        // Extract arg2
+        std::getline(iss, arg2, ' '); // Extract up to the next space
         if (!arg2.empty()) {
             arg2 = arg2.substr(1); // Remove leading space only if arg2 is not empty
         }
+
+        // Extract arg3
+        std::getline(iss, arg3, ' '); // Extract up to the next space
+        if (!arg3.empty()) {
+            arg3 = arg3.substr(1); // Remove leading space only if arg3 is not empty
+        }
+
+        // Extract arg4
+        std::getline(iss, arg4); // Extract the rest of the line
+        if (!arg4.empty()) {
+            arg4 = arg4.substr(1); // Remove leading space only if arg4 is not empty
+        }
+
 
         if (cmd == "/set") {
             if (arg1 == "storetitle") {
@@ -112,6 +133,10 @@ int main() {
             else if (arg1 == "membernumber") {
                 receipt.setMemberNumber(std::stoi(arg2));
             }
+        }
+        else if (cmd == "/additem")
+        {
+            receipt.addItem(arg2, arg3, arg4);
         }
         else if (cmd == "/print") {
             receipt.printReceipt();
