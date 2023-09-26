@@ -25,35 +25,35 @@ public:
 
 class Receipt {
 private:
-    std::string storeTitle;
+    std::string title;
     std::string branch;
-    std::string streetName;
-    std::string cityDetails;
-    int memberNumber;
+    std::string street;
+    std::string city;
+    int member;
     std::vector<Item> items;
 
 public:
     // Default constructor
     Receipt()
-        : storeTitle("STORE TITLE"), branch("Willingdon #548"), streetName("4500 Still Creek Drive"),
-        cityDetails("Burnaby, BC V5C 0E5"), memberNumber(111794251737) {
+        : title("STORE TITLE..."), branch("Branch..."), street("Street..."),
+        city("City..."), member(000000000000) {
         items.push_back(Item()); // Default item (Bananas)
         items.push_back(Item(55506, "Chicken", 34.21));
     }
 
     // Getters and Setters Receipt
-    void setStoreTitle(const std::string& title) { storeTitle = title; }
+    void setTitle(const std::string& title) { title = title; }
     void setBranch(const std::string& branchName) { branch = branchName; }
-    void setStreetName(const std::string& street) { streetName = street; }
-    void setCityDetails(const std::string& details) { cityDetails = details; }
-    void setMemberNumber(int number) { memberNumber = number; }
+    void setStreet(const std::string& street) { street = street; }
+    void setCity(const std::string& details) { city = details; }
+    void setMember(int number) { member = number; }
     void setItems(const std::vector<Item>& newItems) { items = newItems; }
 
-    std::string getStoreTitle() const { return storeTitle; }
+    std::string getTitle() const { return title; }
     std::string getBranch() const { return branch; }
-    std::string getStreetName() const { return streetName; }
-    std::string getCityDetails() const { return cityDetails; }
-    int getMemberNumber() const { return memberNumber; }
+    std::string getStreet() const { return street; }
+    std::string getCity() const { return city; }
+    int getMember() const { return member; }
     const std::vector<Item>& getItems() const { return items; }
 
     void addItem(const std::string& idStr, const std::string& name, const std::string& priceStr) {
@@ -70,11 +70,11 @@ public:
     void printReceipt() const {
         std::cout << std::endl;
         std::cout << "---------------------------" << std::endl;
-        std::cout << storeTitle << std::endl;
+        std::cout << title << std::endl;
         std::cout << branch << std::endl;
-        std::cout << streetName << std::endl;
-        std::cout << cityDetails << std::endl << std::endl;
-        std::cout << "Member " << memberNumber << std::endl;
+        std::cout << street << std::endl;
+        std::cout << city << std::endl << std::endl;
+        std::cout << "Member " << member << std::endl;
         std::cout << std::endl;
 
         double subtotal = 0.0;
@@ -107,11 +107,11 @@ nlohmann::json to_json(const Item& item) {
 
 nlohmann::json to_json(const Receipt& receipt) {
     nlohmann::json j;
-    j["storeTitle"] = receipt.getStoreTitle();
+    j["title"] = receipt.getTitle();
     j["branch"] = receipt.getBranch();
-    j["streetName"] = receipt.getStreetName();
-    j["cityDetails"] = receipt.getCityDetails();
-    j["memberNumber"] = receipt.getMemberNumber();
+    j["street"] = receipt.getStreet();
+    j["city"] = receipt.getCity();
+    j["member"] = receipt.getMember();
 
     // For the items vector:
     for (const auto& item : receipt.getItems()) {
@@ -145,11 +145,11 @@ void load_from_file(Receipt& receipt, const std::string& filename) {
     file >> j;
 
     // Check for the existence of keys and handle potential null values
-    std::string storeTitle = j.contains("storeTitle") && !j["storeTitle"].is_null() ? j["storeTitle"].get<std::string>() : "Default Store Title";
+    std::string title = j.contains("title") && !j["title"].is_null() ? j["title"].get<std::string>() : "Default Store Title";
     std::string branch = j.contains("branch") && !j["branch"].is_null() ? j["branch"].get<std::string>() : "Default Branch";
-    std::string streetName = j.contains("streetName") && !j["streetName"].is_null() ? j["streetName"].get<std::string>() : "Default Street Name";
-    std::string cityDetails = j.contains("cityDetails") && !j["cityDetails"].is_null() ? j["cityDetails"].get<std::string>() : "Default City Details";
-    int memberNumber = j.contains("memberNumber") && !j["memberNumber"].is_null() ? j["memberNumber"].get<int>() : 0; // Default member number as 0
+    std::string street = j.contains("street") && !j["street"].is_null() ? j["street"].get<std::string>() : "Default Street Name";
+    std::string city = j.contains("city") && !j["city"].is_null() ? j["city"].get<std::string>() : "Default City Details";
+    int member = j.contains("member") && !j["member"].is_null() ? j["member"].get<int>() : 0; // Default member number as 0
 
     std::vector<Item> items;
     if (j.contains("items") && j["items"].is_array()) {
@@ -162,11 +162,11 @@ void load_from_file(Receipt& receipt, const std::string& filename) {
     }
 
     // Set the values to the receipt object
-    receipt.setStoreTitle(storeTitle);
+    receipt.setTitle(title);
     receipt.setBranch(branch);
-    receipt.setStreetName(streetName);
-    receipt.setCityDetails(cityDetails);
-    receipt.setMemberNumber(memberNumber);
+    receipt.setStreet(street);
+    receipt.setCity(city);
+    receipt.setMember(member);
     receipt.setItems(items);
 }
 
@@ -192,20 +192,20 @@ int main() {
             std::getline(iss, arg2); // Read the rest of the line after the first argument
             arg2 = arg2.substr(1);   // Remove the leading space
 
-            if (arg1 == "storetitle") {
-                receipt.setStoreTitle(arg2);
+            if (arg1 == "title") {
+                receipt.setTitle(arg2);
             }
             else if (arg1 == "branch") {
                 receipt.setBranch(arg2);
             }
-            else if (arg1 == "streetname") {
-                receipt.setStreetName(arg2);
+            else if (arg1 == "street") {
+                receipt.setStreet(arg2);
             }
-            else if (arg1 == "citydetails") {
-                receipt.setCityDetails(arg2);
+            else if (arg1 == "city") {
+                receipt.setCity(arg2);
             }
-            else if (arg1 == "membernumber") {
-                receipt.setMemberNumber(std::stoi(arg2));
+            else if (arg1 == "member") {
+                receipt.setMember(std::stoi(arg2));
             }
         }
         else if (cmd == "/additem") {
