@@ -69,6 +69,7 @@ public:
 
     void printReceipt() const {
         std::cout << std::endl;
+        std::cout << "---------------------------" << std::endl;
         std::cout << storeTitle << std::endl;
         std::cout << branch << std::endl;
         std::cout << streetName << std::endl;
@@ -87,9 +88,11 @@ public:
         double tax = gst + pst;
         double total = subtotal + tax;
 
+        std::cout << std::endl;
         std::cout << "Subtotal " << subtotal << std::endl;
         std::cout << "Tax " << tax << " (GST " << gst << " PST " << pst << ")" << std::endl;
         std::cout << "TOTAL (" << total << ")" << std::endl;
+        std::cout << "---------------------------" << std::endl;
         std::cout << std::endl;
     }
 };
