@@ -104,12 +104,14 @@ nlohmann::json to_json(const Item& item) {
 
 nlohmann::json to_json(const Receipt& receipt) {
     nlohmann::json j;
-    j["storeTitle"] = receipt.getStoreTitle(); // You'll need to add a getter for this
-    j["branch"] = receipt.getBranch();         // Add a getter for this too
-    // ... do this for all members
+    j["storeTitle"] = receipt.getStoreTitle();
+    j["branch"] = receipt.getBranch();
+    j["streetName"] = receipt.getStreetName();
+    j["cityDetails"] = receipt.getCityDetails();
+    j["memberNumber"] = receipt.getMemberNumber();
 
     // For the items vector:
-    for (const auto& item : receipt.getItems()) { // Add a getter for items
+    for (const auto& item : receipt.getItems()) {
         j["items"].push_back(to_json(item));
     }
     return j;
