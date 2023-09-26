@@ -96,28 +96,10 @@ int main() {
         std::istringstream iss(command);
         std::string cmd, arg1, arg2, arg3, arg4;
 
-        iss >> cmd >> arg1;
-
-        // Extract arg2
-        std::getline(iss, arg2, ' '); // Extract up to the next space
-        if (!arg2.empty()) {
-            arg2 = arg2.substr(1); // Remove leading space only if arg2 is not empty
-        }
-
-        // Extract arg3
-        std::getline(iss, arg3, ' '); // Extract up to the next space
-        if (!arg3.empty()) {
-            arg3 = arg3.substr(1); // Remove leading space only if arg3 is not empty
-        }
-
-        // Extract arg4
-        std::getline(iss, arg4); // Extract the rest of the line
-        if (!arg4.empty()) {
-            arg4 = arg4.substr(1); // Remove leading space only if arg4 is not empty
-        }
-
+        iss >> cmd;
 
         if (cmd == "/set") {
+            iss >> arg1 >> arg2;
             if (arg1 == "storetitle") {
                 receipt.setStoreTitle(arg2);
             }
@@ -134,12 +116,15 @@ int main() {
                 receipt.setMemberNumber(std::stoi(arg2));
             }
         }
-        else if (cmd == "/additem")
-        {
-            receipt.addItem(arg2, arg3, arg4);
+        else if (cmd == "/additem") {
+            iss >> arg1 >> arg2 >> arg3;
+            receipt.addItem(arg1, arg2, arg3);
         }
         else if (cmd == "/print") {
             receipt.printReceipt();
+        }
+        else {
+            std::cout << "Invalid command. Please try again." << std::endl;
         }
     }
 
