@@ -1,5 +1,6 @@
 {
     "branch": "Willingdon #548",
+    "city": "Burnaby, BC V5C 0E5",
     "items": [
         {
             "id": 30669,
@@ -10,7 +11,14 @@
             "id": 55506,
             "name": "Chicken",
             "price": 34.21
+        },
+        {
+            "id": 12345,
+            "name": "PC",
+            "price": 2500.5
         }
     ],
-    "storeTitle": "Costco"
+    "member": 111794251737,
+    "title": "Costco",
+    "street": "4500 Still Creek Ave"
 }
