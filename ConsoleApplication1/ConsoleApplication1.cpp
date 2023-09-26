@@ -188,7 +188,10 @@ int main() {
         iss >> cmd;
 
         if (cmd == "/set") {
-            iss >> arg1 >> arg2;
+            iss >> arg1;
+            std::getline(iss, arg2); // Read the rest of the line after the first argument
+            arg2 = arg2.substr(1);   // Remove the leading space
+
             if (arg1 == "storetitle") {
                 receipt.setStoreTitle(arg2);
             }
