@@ -1,0 +1,4 @@
+﻿  ConsoleApplication1.cpp
+C:\Users\amosp\Desktop\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(37,57): warning C4305: 'initializing': truncation from '__int64' to 'int'
+C:\Users\amosp\Desktop\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(37,58): warning C4309: 'initializing': truncation of constant value
+  ConsoleApplication1.vcxproj -> C:\Users\amosp\Desktop\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
