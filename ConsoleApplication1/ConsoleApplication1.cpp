@@ -170,8 +170,7 @@ void load_from_file(Receipt& receipt, const std::string& filename) {
     receipt.setItems(items);
 }
 
-int main() {
-    Receipt receipt;
+void processCommand(Receipt& receipt) {
     std::string command;
 
     while (true) {
@@ -230,7 +229,12 @@ int main() {
             std::cout << "Invalid command. Please try again." << std::endl;
         }
     }
+}
 
+
+int main() {
+    Receipt receipt;
+    processCommand(receipt);
     return 0;
 }
 
