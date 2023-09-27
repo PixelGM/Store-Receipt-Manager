@@ -276,9 +276,10 @@ void processCommand(Receipt& receipt) {
             double discountPercentage;
             int itemId;
 
-            iss >> discountPercentage >> itemId;
+            iss >> itemId >> discountPercentage;
 
             receipt.applyDiscountToItem(itemId, discountPercentage);
+            std::cout << itemId << " has been Discounted by " << discountPercentage * 100 << "%!" << std::endl;
         }
         else {
             std::cout << "Invalid command. Please try again." << std::endl;
