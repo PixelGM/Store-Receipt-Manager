@@ -250,8 +250,15 @@ void processCommand(Receipt& receipt) {
         else if (cmd == "/additem") {
             iss >> arg1 >> arg2 >> arg3;
             if (!arg1.empty() && !arg2.empty() && !arg3.empty()) {
-                receipt.addItem(arg1, arg2, arg3);
-                std::cout << "An Item Has Been Added!" << std::endl;
+                if (arg1.size() == 5) {
+                    receipt.addItem(arg1, arg2, arg3);
+                    std::cout << "An Item Has Been Added!" << std::endl;
+                } 
+                else {
+                    std::cout << "Item ID has to be 5 Digits!" << std::endl;
+                    continue;
+                }
+                
             }
             else {
                 std::cout << "Invalid arguments for /additem command." << std::endl;
