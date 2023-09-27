@@ -24,6 +24,15 @@ public:
     int getId() const { return id; }
     std::string getName() const { return name; }
     double getPrice() const { return price; }
+
+    void applyDiscount(double percentage) {
+        if (percentage >= 0 && percentage <= 1) {
+            price -= price * percentage;
+        }
+        else {
+            std::cerr << "Invalid discount percentage. It should be between 0 and 1." << std::endl;
+        }
+    }
 };
 
 class Receipt {
@@ -98,6 +107,17 @@ public:
         std::cout << "---------------------------" << std::endl;
         std::cout << std::endl;
     }
+
+    void applyDiscountToItem(int itemId, double percentage) {
+        for (auto& item : items) {
+            if (item.getId() == itemId) {
+                item.applyDiscount(percentage);
+                return;
+            }
+        }
+        std::cerr << "Item with ID: " << itemId << " not found." << std::endl;
+    }
+
 };
 
 nlohmann::json to_json(const Item& item) {
@@ -246,10 +266,19 @@ void processCommand(Receipt& receipt) {
         else if (cmd == "/load") {
             try {
                 load_from_file(receipt, "receipt.json");
+                std::cout << "JSON has been Loaded!" << std::endl;
             }
             catch (const nlohmann::json::exception& e) {
                 std::cerr << "JSON error: " << e.what() << std::endl;
             }
+        }
+        else if (cmd == "/discount") {
+            double discountPercentage;
+            int itemId;
+
+            iss >> discountPercentage >> itemId;
+
+            receipt.applyDiscountToItem(itemId, discountPercentage);
         }
         else {
             std::cout << "Invalid command. Please try again." << std::endl;
