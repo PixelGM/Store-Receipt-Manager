@@ -200,19 +200,24 @@ void processCommand(Receipt& receipt) {
 
             if (arg1 == "title") {
                 receipt.setTitle(arg2);
+                std::cout << "Title Has Been Set!" << std::endl;
             }
             else if (arg1 == "branch") {
                 receipt.setBranch(arg2);
+                std::cout << "Branch Has Been Set!" << std::endl;
             }
             else if (arg1 == "street") {
                 receipt.setStreet(arg2);
+                std::cout << "Street Has Been Set!" << std::endl;
             }
             else if (arg1 == "city") {
                 receipt.setCity(arg2);
+                std::cout << "City Has Been Set!" << std::endl;
             }
             else if (arg1 == "member") {
                 try {
                     receipt.setMember(std::stoi(arg2));
+                    std::cout << "Title Has Been Set!" << std::endl;
                 }
                 catch (const std::invalid_argument& e) {
                     std::cerr << "Invalid member number provided." << std::endl;
@@ -226,6 +231,7 @@ void processCommand(Receipt& receipt) {
             iss >> arg1 >> arg2 >> arg3;
             if (!arg1.empty() && !arg2.empty() && !arg3.empty()) {
                 receipt.addItem(arg1, arg2, arg3);
+                std::cout << "An Item Has Been Added!" << std::endl;
             }
             else {
                 std::cout << "Invalid arguments for /additem command." << std::endl;
