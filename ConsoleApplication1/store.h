@@ -3,11 +3,10 @@
 
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 #include <iomanip>
 #include <sstream>
-#include <fstream>
 #include "../nlohmann/json.hpp"
+#include <fstream>
 
 class Item {
 private:
@@ -44,7 +43,6 @@ private:
     std::string city;
     int member;
     std::vector<Item> items;
-    std::unordered_map<int, Item> items_map;
 
 public:
     // Default constructor
@@ -71,9 +69,14 @@ public:
     const std::vector<Item>& getItems() const { return items; }
 
     void addItem(const std::string& idStr, const std::string& name, const std::string& priceStr) {
+        // Convert id string to int
         int id = std::stoi(idStr);
+
+        // Convert price string to double
         double price = std::stod(priceStr);
-        items_map.emplace(id, Item(id, name, price));
+
+        Item item(id, name, price);
+        items.push_back(item);
     }
 
     void printReceipt() const {
@@ -106,10 +109,11 @@ public:
     }
 
     void applyDiscountToItem(int itemId, double percentage) {
-        auto it = items_map.find(itemId);
-        if (it != items_map.end()) {
-            it->second.applyDiscount(percentage);
-            return;
+        for (auto& item : items) {
+            if (item.getId() == itemId) {
+                item.applyDiscount(percentage);
+                return;
+            }
         }
         std::cerr << "Item with ID: " << itemId << " not found." << std::endl;
     }
