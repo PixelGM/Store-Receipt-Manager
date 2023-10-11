@@ -107,6 +107,17 @@ public:
         std::cout << "---------------------------" << std::endl;
         std::cout << std::endl;
     }
+    void printSettings() const {
+        std::cout << std::endl;
+        std::cout << "---------------------------" << std::endl;
+        std::cout << title << std::endl;
+        std::cout << branch << std::endl;
+        std::cout << street << std::endl;
+        std::cout << city << std::endl;
+        std::cout << "---------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
 
     void applyDiscountToItem(int itemId, double percentage) {
         for (auto& item : items) {
@@ -266,6 +277,9 @@ void processCommand(Receipt& receipt) {
         }
         else if (cmd == "/print") {
             receipt.printReceipt();
+        }
+        else if (cmd == "/prints") {
+            receipt.printSettings();
         }
         else if (cmd == "/save") {
             save_to_file(receipt, "receipt.json");
